@@ -4,17 +4,23 @@ from datetime import datetime
 
 class Pomodoro(rumps.App):
     def __init__(self):
-        super(Pomodoro, self).__init__("Pomodoro Timer", icon='./icons/tomato.png', quit_button=None)
-        self.start_button = rumps.MenuItem("{: <8}".format("Start"), callback=self.timer_start,
+        super(Pomodoro, self).__init__("Pomodoro Timer", 
+                                       icon='./icons/tomato.png',
+                                       quit_button=None)
+        self.start_button = rumps.MenuItem("{: <8}".format("Start"),
+                                           callback=self.timer_start,
                                            icon='./icons/play-button.png')
-        self.stop_button = rumps.MenuItem("Stop", callback=self.timer_stop, icon='./icons/stop.png')
-        self.exit_button = rumps.MenuItem("Exit", callback=self.exit_app, icon='./icons/logout.png')
-        self.menu = [self.start_button, self.stop_button, rumps.separator, self.exit_button]
+        self.stop_button = rumps.MenuItem("Stop", callback=self.timer_stop,
+                                          icon='./icons/stop.png')
+        self.exit_button = rumps.MenuItem("Exit", callback=self.exit_app, 
+                                          icon='./icons/logout.png')
+        self.menu = [self.start_button, self.stop_button, rumps.separator,
+                     self.exit_button]
         self.timer = rumps.Timer(self.timer_on, 1)
         self.timer_reset()
 
     def timer_start(self, sender):
-        if sender.title.startswith("Start"):                    # Start
+        if sender.title.startswith("Start"):                    # Press Start
             self.timer.start_ = datetime.now()
             self.timer.end = 1500
             self.timer.pause = 0
@@ -22,14 +28,14 @@ class Pomodoro(rumps.App):
             self.timer.start()
             sender.title = "Pause"
             sender.icon = './icons/pause.png'
-        elif sender.title == "Continue":                        # Continue
+        elif sender.title == "Continue":                        # Press Continue
             self.timer.pause = datetime.now() - self.timer.pause_time
             self.timer.pause = int(self.timer.pause.total_seconds())
             self.timer.total_pause += self.timer.pause
             self.timer.start()
             sender.title = "Pause"
             sender.icon = './icons/pause.png'
-        else:                                                   # Pause
+        else:                                                   # Press Pause
             self.timer.pause_time = datetime.now()
             sender.title = "Continue"
             sender.icon = './icons/play-button.png'
